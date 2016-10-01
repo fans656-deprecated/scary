@@ -1,0 +1,42 @@
+{
+    "step_interval": 100,
+    "commands": [
+        "load ghost.jpg",
+        "repeat forever",
+            "alpha 0 to 10 3s",
+            "alpha 10 to 0 3s",
+        "end repeat"
+    ],
+    "predefined_commands": {
+        "leopard": [
+            "load leopard.jpg",
+            "repeat forever",
+                "alpha 0 to 100 1s",
+                "alpha 100 to 0 1s",
+            "end repeat"
+        ],
+        "girl": [
+            "load girl.jpg",
+            "repeat forever",
+                "alpha 0 to 100 1s",
+                "alpha 100 to 0 1s",
+            "end repeat"
+        ],
+        "scary": [
+            "load scary.png",
+            "repeat 3",
+                "alpha 0 to 20 3s",
+                "alpha 20 to 0 3s",
+            "end repeat",
+            "alpha 100 3s",
+            "alpha 0 forever"
+        ],
+        "smoke": [
+            "load smoke.png",
+            "repeat forever",
+                "alpha 0 to 100 5s",
+                "alpha 100 to 0 5s",
+            "end repeat"
+        ]
+    }
+}

@@ -1,0 +1,5 @@
+2016-10-01 11:24:03
+    pyinstaller main.py
+之后flask会报ImportError，用
+    pyinstaller --hidden-import="SocketServer" main.py
+就好了
