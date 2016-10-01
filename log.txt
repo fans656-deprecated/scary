@@ -1,5 +1,65 @@
+2016-10-01 22:26:14
+这个是用来吓人的
+比如你用着电脑，莫名感觉屏幕上有点儿什么若隐若现的东西，然后忽然完全显现，是张恐怖的人脸
+
+全屏覆盖显示一张图片，只是显示不会影响鼠标键盘对其下窗口的操作
+可以改变透明度——根据config.json里的简单脚本实现动画效果
+同时跑一个restful服务器，可以远程向目标机器发送命令更换图片、改变动画
+比如
+    http://10.105.41.77/load?name=scary
+加载预定义的scary动画
+或者执行一条语句
+    http://10.105.41.77/execute?cmd=alpha 90 forever
+
+最初是因为玩graphviz，用qt显示在窗口里，然后想着能不能背景透明
+试了试继而就拿自己头像的图片做出一个圆形的窗口，拖着玩
+继而就诱发了做这个东西的想法，算是做了两天达到现在的效果
+
+途中没怎么记录过程，这里mark些涉及到的东西吧：
+    QWidget背景透明 + 窗口置于最高层
+        self.setWindowFlags(Qt.ToolTip | Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground)
+    不接受鼠标键盘输入(transparent for input)
+        win32api.SetWindowLong
+    改变图片透明度
+        p = QPainter()
+        p.begin(img)
+        p.setOpacity(alpha)
+        p.drawPixmap(0, 0, self.base_pixmap)
+        p.end()
+    flask server 与 qt event loop 并行
+        QThread
+    flask 与 qt 交换数据
+        signal/slot
+    脚本定制动画效果
+        简单的编译+运行
+        config.json
+    编译为exe
+        pyinstaller --hidden-import
+    requests performance
+        127.0.0.1 localhost
+
+另外感慨一下，老以前写程序的时光里，自己就老会学着什么东西冒出一跑偏的念头，然后就跑去实现，但是大抵是写得松松垮垮
+现在总算是经常能既有心也有力了，除了玩乐，也写出过一些实际用的东西
+比如quick-console已经成为每天使用的日常，dups给移动硬盘省了200G空间，bridge每天背两句英语
+早些的，study-time-record考研期间记录每天的学习时间，grade-crawler复试前爬虫统计各组人数分数
+以及以及..
+
 2016-10-01 11:24:03
     pyinstaller main.py
 之后flask会报ImportError，用
     pyinstaller --hidden-import="SocketServer" main.py
 就好了
+
+2016-10-01 20:29:14
+    requests.get('http://localhost/')
+需要一秒，改成
+    requests.get('http://127.0.0.1/')
+就只需要0.01秒
+
+http://stackoverflow.com/questions/2617615/slow-python-http-server-on-localhost
+这里说跟FQDN(full qualified domain name)有关
+
+又找了找，似乎又不是这个关系
+改了hosts降到0.01秒了
+    127.0.0.1 localhost
